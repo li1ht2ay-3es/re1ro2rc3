@@ -6939,6 +6939,7 @@ int runloop_iterate(void)
          netplay_driver_ctl(RARCH_NETPLAY_CTL_PAUSE, NULL);
 #endif
          video_driver_cached_frame();
+<<<<<<< HEAD
 
          /* Limit paused video refresh when vsync is disabled */
          if (!settings->bools.video_vsync)
@@ -6950,6 +6951,12 @@ int runloop_iterate(void)
             goto end;
          }
 
+=======
+#if defined(HAVE_COCOATOUCH)
+         if (!(uico_st->flags & UICO_ST_FLAG_IS_ON_FOREGROUND))
+#endif
+            retro_sleep(10);
+>>>>>>> 8c38a16 (Sleep when idle)
          return 1;
       case RUNLOOP_STATE_MENU:
 #ifdef HAVE_NETWORKING
@@ -6961,6 +6968,7 @@ int runloop_iterate(void)
             netplay_driver_ctl(RARCH_NETPLAY_CTL_PAUSE, NULL);
 #endif
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_MENU
          /* Rely on vsync throttling unless VRR is enabled and menu throttle is disabled. */
          if (vrr_runloop_enable && !settings->bools.menu_throttle_framerate)
@@ -6984,6 +6992,23 @@ int runloop_iterate(void)
             rcheevos_idle();
 #endif
          goto end;
+=======
+#if defined(HAVE_COCOATOUCH)
+         if (!(uico_st->flags & UICO_ST_FLAG_IS_ON_FOREGROUND))
+#endif
+            retro_sleep(10);
+         goto end;
+      case RUNLOOP_STATE_MENU_ITERATE:
+#ifdef HAVE_NETWORKING
+         /* FIXME: This is an ugly way to tell Netplay this... */
+         netplay_driver_ctl(RARCH_NETPLAY_CTL_PAUSE, NULL);
+#endif
+#if defined(HAVE_COCOATOUCH)
+         if (!(uico_st->flags & UICO_ST_FLAG_IS_ON_FOREGROUND))
+#endif
+            retro_sleep(10);
+         return 0;
+>>>>>>> ca32056 (Sleep when idle)
       case RUNLOOP_STATE_ITERATE:
          runloop_st->flags       |= RUNLOOP_FLAG_CORE_RUNNING;
          break;
